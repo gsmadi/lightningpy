@@ -17,6 +17,9 @@ setup(
         'requests',
         'grpcio',
         'grpcio-tools',
-        'googleapis-common-protos'
+        'googleapis-common-protos',
+        'pylint',
+        'pytest',
+        'mypy'
     ],
 )
