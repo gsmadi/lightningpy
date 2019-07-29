@@ -15,3 +15,8 @@ class LNDClientBase(object):
         self.url = url
         self.certificate_path = certificate_path
         self.macaroon_path = macaroon_path
+    
+    def get_info(self) -> object:
+        response = self._implementor.get_info()
+
+        return response
