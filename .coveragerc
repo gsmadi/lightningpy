@@ -1,0 +1,3 @@
+[run]
+omit = 
+    pylnd/grpc/rpc_*
