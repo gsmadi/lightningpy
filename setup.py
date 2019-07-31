@@ -20,6 +20,7 @@ setup(
         'googleapis-common-protos',
         'pylint',
         'pytest',
-        'mypy'
+        'mypy',
+        'pytest-cov'
     ],
 )
