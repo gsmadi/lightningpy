@@ -12,6 +12,7 @@ setup(
     author_email='gabriel@labs.smadi.ci',
     url='https://github.com/smadici-labs/pylnd.git',
     description='Python client for Lightning Network Deamon',
+    packages=find_packages(),
 
     install_requires=[
         'requests',
