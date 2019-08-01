@@ -1,3 +1,5 @@
+from typing import List
+
 from pylnd.abstraction import LNDClientAbstraction
 
 class LNDClientBase(object):
@@ -11,7 +13,49 @@ class LNDClientBase(object):
     def __init__(self, implementor):
         self._implementor = implementor
 
-    def get_info(self) -> object:
-        response = self._implementor.get_info()
+    def generate_seed(self,
+                      aezeed_passphrase: str = None,
+                      seed_entropy: str = None) -> bool:
+        response = self._implementor.generate_seed(aezeed_passphrase,
+                                                   seed_entropy)
+
+        if response is None:
+            return False
+
+        return True
+
+
+    def info(self) -> object:
+        response = self._implementor.info()
 
         return response
+
+    def wallet_init(self,
+                    wallet_password: bytes,
+                    cipher_seed_mnemonic: List[str],
+                    aezeed_passphrase: bytes = None,
+                    recovery_window: int = 0,
+                    channel_backups: object = None) -> bool:
+        response = self._implementor.wallet_init(wallet_password,
+                                                 cipher_seed_mnemonic,
+                                                 aezeed_passphrase,
+                                                 recovery_window,
+                                                 channel_backups)
+
+        if response is None:
+            return False
+
+        return True
+
+    def wallet_unlock(self,
+                      wallet_password: bytes,
+                      recovery_window: int = 0,
+                      channel_backups: object = None) -> bool:
+        response = self._implementor.wallet_init(wallet_password,
+                                                 recovery_window,
+                                                 channel_backups)
+
+        if response is None:
+            return False
+
+        return True
