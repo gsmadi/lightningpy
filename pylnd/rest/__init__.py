@@ -56,9 +56,11 @@ class LNDRESTClient(LNDClientAbstraction):
         data = {
             'wallet_password': base64.b64encode(wallet_password).decode(),
             'cipher_seed_mnemonic': cipher_seed_mnemonic,
-            'aezeed_passphrase': base64.b64encode(aezeed_passphrase).decode(),
             'recovery_window': recovery_window,
         }
+
+        if aezeed_passphrase:
+            data['aezeed_passphrase'] = base64.b64encode(aezeed_passphrase).decode()
 
         if channel_backups:
             data['channel_backups'] = channel_backups
