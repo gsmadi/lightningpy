@@ -112,7 +112,7 @@ class LNDRESTClient(LNDClientAbstraction):
 
 
 class LND(LNDClientBase):
-    def __init__(self, url, certificate_path, macaroon_path):
+    def __init__(self, url, certificate_path, macaroon_path, ssl_verify=False):
         implementor = LNDRESTClient(url, certificate_path,
-                                    macaroon_path)
+                                    macaroon_path, ssl_verify=ssl_verify)
         super().__init__(implementor)
