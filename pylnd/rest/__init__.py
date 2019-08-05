@@ -29,7 +29,7 @@ class LNDRESTClient(LNDClientAbstraction):
 
     def generate_seed(self,
                       aezeed_passphrase: str = None,
-                      seed_entropy: str = None) -> bool:
+                      seed_entropy: str = None) -> object:
         route = '/v1/genseed'
         params = {}
 
@@ -39,12 +39,7 @@ class LNDRESTClient(LNDClientAbstraction):
         if seed_entropy:
             params['seed_entropy'] = seed_entropy
 
-        try:
-            self._get_request(route, params)
-        except requests.RequestException:
-            return False
-
-        return True
+        return self._get_request(route, params)
 
     def info(self) -> object:
         route = '/v1/getinfo'

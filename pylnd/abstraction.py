@@ -12,7 +12,7 @@ class LNDClientAbstraction(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def generate_seed(self,
                       aezeed_passphrase: str = None,
-                      seed_entropy: str = None) -> bool:
+                      seed_entropy: str = None) -> object:
         pass
 
     @abc.abstractmethod

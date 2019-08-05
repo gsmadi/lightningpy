@@ -15,14 +15,11 @@ class LNDClientBase(object):
 
     def generate_seed(self,
                       aezeed_passphrase: str = None,
-                      seed_entropy: str = None) -> bool:
+                      seed_entropy: str = None) -> object:
         response = self._implementor.generate_seed(aezeed_passphrase,
                                                    seed_entropy)
 
-        if response is None:
-            return False
-
-        return True
+        return response
 
 
     def info(self) -> object:
