@@ -3,11 +3,11 @@
 import os
 
 from setuptools import setup, find_packages
-    
+ 
 setup(
     # Basic info
     name='pylnd',
-    version='0.2.1',
+    version='0.2.2',
     author='Gabriel Smadi',
     author_email='gabriel@labs.smadi.ci',
     url='https://github.com/smadici-labs/pylnd.git',
