@@ -1,9 +1,7 @@
 # -*- coding: utf8 -*-
 
-import os
-
 from setuptools import setup, find_packages
- 
+
 setup(
     # Basic info
     name='pylnd',
