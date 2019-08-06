@@ -16,7 +16,8 @@ EXTRAS['dev'] = {
     'pylint',
     'pytest',
     'mypy',
-    'pytest-cov'
+    'pytest-cov',
+    'codecov'
 }
 
 setup(
