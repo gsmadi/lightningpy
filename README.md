@@ -1,5 +1,9 @@
 # pylnd
 
+[![Build Status](https://travis-ci.org/smadici-labs/pylnd.svg?branch=master)](https://travis-ci.org/smadici-labs/pylnd)
+[![Documentation Status](https://readthedocs.org/projects/pylnd/badge/?version=latest)](https://pylnd.readthedocs.io/en/latest/?badge=latest)
+
+
 Python client for Lightning Network Deamon [(LND)](https://github.com/lightningnetwork/lnd) with batteries included.
 
 Planned support for both REST and gRPC.
