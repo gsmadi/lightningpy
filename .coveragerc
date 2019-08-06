@@ -1,3 +1,4 @@
 [run]
+source=pylnd
 omit = 
     pylnd/grpc/rpc_*
