@@ -1,7 +1,7 @@
 import pytest
 import requests
 
-from pylnd.rest import LND, LNDRESTClient
+from pylnd.rest import LND, LNDRESTClient, LNDRESTClientError
 
 URL = 'localhost:8080'
 CERT_PATH = 'tests/fake/tls.cert'
@@ -11,6 +11,7 @@ class MockResponse:
     @staticmethod
     def json():
         return {"mock_key": "mock_response"}
+
 
 @pytest.fixture
 def lnd_rest_client(monkeypatch):
@@ -45,6 +46,17 @@ def test_client_get_request(lnd_rest_client):
     result = lnd_rest_client._get_request('/dummy')
 
     assert result.json().get('mock_key') == 'mock_response'
+
+def test_client_handle_error(lnd_rest_client):
+    error_response = MockResponse()
+
+    def json_error():
+        return {"error": "mock_error"}
+
+    setattr(error_response, 'json', json_error)
+
+    with pytest.raises(LNDRESTClientError):
+        lnd_rest_client._handle_error(error_response)
 
 def test_client_post_request(lnd_rest_client):
     result = lnd_rest_client._post_request('/dummy', {'mock': 'param'})

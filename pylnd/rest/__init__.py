@@ -9,6 +9,9 @@ from pylnd import LNDClientBase
 from pylnd.utils import encode_macaroon, read_file
 
 
+class LNDRESTClientError(Exception):
+    pass
+
 class LNDRESTClient(LNDClientAbstraction):
 
     headers: Dict[str, any]
@@ -102,10 +105,26 @@ class LNDRESTClient(LNDClientAbstraction):
 
     def _post_request(self, route, data) -> object:
         response = requests.post(self._endpoint(route),
+                                 headers=self.headers,
                                  cert=self.certificate_path,
                                  verify=self.ssl_verify,
                                  data=json.dumps(data))
         return response
+
+    @staticmethod
+    def _handle_error(response):
+        error = response.json().get('error', None)
+
+        if error:
+            raise LNDRESTClientError(error)
+
+    def _init_macaroon(self):
+        try:
+            macaroon = read_file(self.macaroon_path)
+            encoded_macaroon = encode_macaroon(macaroon)
+            self.headers = {'Grpc-Metadata-macaroon': encoded_macaroon}
+        except FileNotFoundError:
+            pass
 
 
 class LND(LNDClientBase):
