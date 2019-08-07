@@ -71,12 +71,12 @@ def test_lnd_info(lnd_rest_client):
 def test_lnd_generate_seed(lnd_rest_client):
     response = lnd_rest_client.generate_seed()
 
-    assert isinstance(response, bool)
+    assert isinstance(response, MockResponse)
 
     response = lnd_rest_client.generate_seed(aezeed_passphrase='dummy',
                                              seed_entropy='dummy2')
 
-    assert isinstance(response, bool)
+    assert isinstance(response, MockResponse)
 
 def test_lnd_wallet_init(lnd_rest_client):
     response = lnd_rest_client.wallet_init(b'password',
