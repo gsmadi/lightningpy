@@ -5,5 +5,5 @@ python:
 install:
   - pip install -e .[dev]
 script:
-  - pytest --cov=./
+  - pytest --cov=pylnd
   - codecov --token=$CODECOV_TOKEN
