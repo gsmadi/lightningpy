@@ -1,1 +1,7 @@
+docs/build
+
+.coverage
+
 .venv
+
+*pycache*
