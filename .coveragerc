@@ -2,3 +2,6 @@
 source=pylnd
 omit = 
     pylnd/grpc/rpc_*
+
+[report]
+fail_under=80
