@@ -26,6 +26,14 @@ Then install,
 
 `python setup.py develop`
 
+To run tests execute,
+
+`pytest`
+
+with code coverage,
+
+`pytest --cov=pylnd`
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details
