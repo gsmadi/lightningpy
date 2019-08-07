@@ -1,9 +1,17 @@
 language: python
 python:
-  - "3.6"
-  - "3.7"
+- '3.6'
+- '3.7'
 install:
-  - pip install -e .[dev]
+- pip install -e .[dev]
 script:
-  - pytest --cov=pylnd
-  - codecov --token=$CODECOV_TOKEN
+- pytest --cov=pylnd
+- codecov --token=$CODECOV_TOKEN
+deploy:
+  provider: pypi
+  user: gsmadi
+  password:
+    secure: 0+tLjmc4HijbEul4WiOjxlREiaaQCJ5t3owS1jBGnms1VYQjYjgRGRfSn8+I0g0W2iinIKjg87P4XRgWSEgvSadniVHCwXG4WQQUvXoeUiDg+b5jyag7ibwwqhjvuDlbO6zqdDCsif4RSjBMHIh58goYljVkg9BH4lgg4ifY7PlEuvIp2N24tlygLAlF2PhLotjM/0BKnLLASXUlgSzIIH3Oadn6ZNONt9wNX2bu2I4CAXK1lcL7mWJAfd1CawndAb5DBD5NZGpsFFM7vSi0MYDw2Wf5sgIVUGl2xZvGSVJ898BkN+b14nLtqHw4LXP58/FZb5UOnwOUutL6eSvXrdfc/mnH0i09AvxfGaSA0B5gX51udql3DdiKGtN158z4qYzQb7k2D8bUQ6iwoNpHO7e6D0y/VdEc1HOMscX/y97rdtN4T98rFE94BZyio1EAgBYJ068j6oMW9f1DhLvmLOW893KkSUwnc517Le/NWQoeDXTIOUPmKbtHCaAhQpffg/0xMUDXuy3UHdqK71hKW5rcrJmXWlt2NNUcR6WAK/+96Qw01T3OWB+9Puw3+djFyG7SbeJKWV0THunmKYM/1nyZBvnJa2uHK7Y6FjVGCD1fTp0t/mFFEHWzwVAPMwr0rIZMTN/VkcRiSQ0tsH+9kSEAH37whyovpUAzohJrQ3E=
+  on:
+    tags: true
+  skip_existing: true
