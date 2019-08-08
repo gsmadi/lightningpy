@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/smadici-labs/pylnd.svg?branch=master)](https://travis-ci.org/smadici-labs/pylnd)
 [![Documentation Status](https://readthedocs.org/projects/pylnd/badge/?version=latest)](https://pylnd.readthedocs.io/en/latest/?badge=latest)
 [![codecov](https://codecov.io/gh/smadici-labs/pylnd/branch/master/graph/badge.svg)](https://codecov.io/gh/smadici-labs/pylnd)
-
+[![PyPI version](https://badge.fury.io/py/pylnd.svg)](https://badge.fury.io/py/pylnd)
 
 Python client for Lightning Network Deamon [(LND)](https://github.com/lightningnetwork/lnd) with batteries included.
 
