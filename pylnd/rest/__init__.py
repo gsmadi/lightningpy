@@ -25,10 +25,9 @@ class LNDRESTClient(LNDClientAbstraction):
         self.certificate_path = certificate_path
         self.macaroon_path = macaroon_path
         self.ssl_verify = ssl_verify
+        self.headers = {}
 
-        macaroon = read_file(macaroon_path)
-        encoded_macaroon = encode_macaroon(macaroon)
-        self.headers = {'Grpc-Metadata-macaroon': encoded_macaroon}
+        self._init_macaroon()
 
     def generate_seed(self,
                       aezeed_passphrase: str = None,
@@ -54,7 +53,7 @@ class LNDRESTClient(LNDClientAbstraction):
                     cipher_seed_mnemonic: List[str],
                     aezeed_passphrase: bytes = None,
                     recovery_window: int = 0,
-                    channel_backups: object = None) -> bool:
+                    channel_backups: object = None) -> object:
         route = '/v1/unlockwallet'
         data = {
             'wallet_password': base64.b64encode(wallet_password).decode(),
@@ -68,14 +67,14 @@ class LNDRESTClient(LNDClientAbstraction):
         if channel_backups:
             data['channel_backups'] = channel_backups
 
-        self._post_request(route, data)
+        response = self._post_request(route, data)
 
-        return True
+        return response
 
     def wallet_unlock(self,
                       wallet_password: bytes,
                       recovery_window: int = 0,
-                      channel_backups: object = None) -> bool:
+                      channel_backups: object = None) -> object:
         route = '/v1/unlockwallet'
         data = {
             'wallet_password': base64.b64encode(wallet_password).decode(),
@@ -85,9 +84,9 @@ class LNDRESTClient(LNDClientAbstraction):
         if channel_backups:
             data['channel_backups'] = channel_backups
 
-        self._post_request(route, data)
+        response = self._post_request(route, data)
 
-        return True
+        return response
 
     def _endpoint(self, route) -> str:
         return f'{self.url}{route}'
@@ -101,6 +100,9 @@ class LNDRESTClient(LNDClientAbstraction):
                                 cert=self.certificate_path,
                                 verify=self.ssl_verify,
                                 params=params)
+
+        self._handle_error(response)
+
         return response
 
     def _post_request(self, route, data) -> object:
@@ -109,6 +111,9 @@ class LNDRESTClient(LNDClientAbstraction):
                                  cert=self.certificate_path,
                                  verify=self.ssl_verify,
                                  data=json.dumps(data))
+
+        self._handle_error(response)
+
         return response
 
     @staticmethod
@@ -124,7 +129,7 @@ class LNDRESTClient(LNDClientAbstraction):
             encoded_macaroon = encode_macaroon(macaroon)
             self.headers = {'Grpc-Metadata-macaroon': encoded_macaroon}
         except FileNotFoundError:
-            pass
+            raise LNDRESTClientError('Could not find macaroon file')
 
 
 class LND(LNDClientBase):

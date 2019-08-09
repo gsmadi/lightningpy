@@ -80,17 +80,17 @@ def test_lnd_generate_seed(lnd_rest_client):
 
 def test_lnd_wallet_init(lnd_rest_client):
     response = lnd_rest_client.wallet_init(b'password',
-                                             ['str'],
-                                             b'passphrase',
-                                             2)
+                                           ['str'],
+                                           b'passphrase',
+                                           2)
 
-    assert isinstance(response, bool)
+    assert isinstance(response, MockResponse)
 
 
 def test_lnd_wallet_unlock(lnd_rest_client):
     response = lnd_rest_client.wallet_unlock(b'password', 2)
 
-    assert isinstance(response, bool)
+    assert isinstance(response, MockResponse)
 
 def test_lnd_client_initialize():
     lnd = LND(URL, CERT_PATH, MACAROON_PATH)

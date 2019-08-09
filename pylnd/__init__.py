@@ -21,7 +21,6 @@ class LNDClientBase(object):
 
         return response
 
-
     def info(self) -> object:
         response = self._implementor.info()
 
@@ -32,7 +31,7 @@ class LNDClientBase(object):
                     cipher_seed_mnemonic: List[str],
                     aezeed_passphrase: bytes = None,
                     recovery_window: int = 0,
-                    channel_backups: object = None) -> bool:
+                    channel_backups: object = None) -> object:
         response = self._implementor.wallet_init(wallet_password,
                                                  cipher_seed_mnemonic,
                                                  aezeed_passphrase,
@@ -47,7 +46,7 @@ class LNDClientBase(object):
     def wallet_unlock(self,
                       wallet_password: bytes,
                       recovery_window: int = 0,
-                      channel_backups: object = None) -> bool:
+                      channel_backups: object = None) -> object:
         response = self._implementor.wallet_init(wallet_password,
                                                  recovery_window,
                                                  channel_backups)
