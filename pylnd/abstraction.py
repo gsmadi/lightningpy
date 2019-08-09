@@ -25,12 +25,12 @@ class LNDClientAbstraction(metaclass=abc.ABCMeta):
                     cipher_seed_mnemonic: List[str],
                     aezeed_passphrase: bytes = None,
                     recovery_window: int = 0,
-                    channel_backups: object = None) -> bool:
+                    channel_backups: object = None) -> object:
         pass
 
     @abc.abstractmethod
     def wallet_unlock(self,
                       wallet_password: bytes,
                       recovery_window: int = 0,
-                      channel_backups: object = None) -> bool:
+                      channel_backups: object = None) -> object:
         pass
