@@ -27,8 +27,6 @@ class LNDRESTClient(LNDClientAbstraction):
         self.ssl_verify = ssl_verify
         self.headers = {}
 
-        self._init_macaroon()
-
     def generate_seed(self,
                       aezeed_passphrase: str = None,
                       seed_entropy: str = None) -> object:
@@ -50,11 +48,11 @@ class LNDRESTClient(LNDClientAbstraction):
 
     def wallet_init(self,
                     wallet_password: bytes,
-                    cipher_seed_mnemonic: List[str],
+                    cipher_seed_mnemonic: List[str] = None,
                     aezeed_passphrase: bytes = None,
                     recovery_window: int = 0,
                     channel_backups: object = None) -> object:
-        route = '/v1/unlockwallet'
+        route = '/v1/initwallet'
         data = {
             'wallet_password': base64.b64encode(wallet_password).decode(),
             'cipher_seed_mnemonic': cipher_seed_mnemonic,
