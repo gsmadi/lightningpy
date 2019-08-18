@@ -13,6 +13,10 @@ Only supporting Python 3 since we should not be using Python 2.x anymore.
 
 ## Getting started
 
+### Install
+
+`pip install pylnd`
+
 ### Development
 
 Make a virtual environment,
