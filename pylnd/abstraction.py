@@ -22,7 +22,7 @@ class LNDClientAbstraction(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def wallet_init(self,
                     wallet_password: bytes,
-                    cipher_seed_mnemonic: List[str],
+                    cipher_seed_mnemonic: List[str] = None,
                     aezeed_passphrase: bytes = None,
                     recovery_window: int = 0,
                     channel_backups: object = None) -> object:
