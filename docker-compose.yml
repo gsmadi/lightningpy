@@ -2,7 +2,7 @@ version: '3.7'
 services:
   pylnd:
     entrypoint: pytest 
-    command: -m e2e --disable-warnings
+    command: -m e2e --no-cov --disable-warnings
     user: root
     build:
       context: .
@@ -21,6 +21,7 @@ services:
     user: root
     entrypoint: btcd
     command: --configfile=/home/btcd/.btcd/btcd.conf
+    network_mode: host
     volumes:
       - shared:/rpc
       - ./config/btcd.conf:/home/btcd/.btcd/btcd.conf
@@ -31,6 +32,7 @@ services:
     entrypoint: lnd
     user: root
     command: --configfile=/root/.lnd/lnd.conf
+    network_mode: host
     volumes:
       - shared:/rpc
       - lndv:/root/.lnd
