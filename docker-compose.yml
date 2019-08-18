@@ -1,0 +1,57 @@
+version: '3.7'
+services:
+  pylnd:
+    entrypoint: pytest 
+    command: -m e2e
+    user: root
+    build:
+      context: .
+    networks:
+      - shared
+    volumes:
+      - lndv:/lnd
+    depends_on: 
+      - btcd
+      - lnd
+    environment:
+      - TEST_ENV=DOCKER
+ 
+  btcd:
+    image: gsmadi/btcd:latest
+    container_name: btcd_simnet
+    user: root
+    entrypoint: btcd
+    command: --configfile=/home/btcd/.btcd/btcd.conf
+    networks:
+      - shared
+    volumes:
+      - shared:/rpc
+      - ./config/btcd.conf:/home/btcd/.btcd/btcd.conf
+
+  lnd:
+    image: gsmadi/lnd:v0.7.0-beta
+    container_name: lnd
+    entrypoint: lnd
+    user: root
+    command: --configfile=/root/.lnd/lnd.conf
+    networks:
+      - shared
+    volumes:
+      - shared:/rpc
+      - lndv:/root/.lnd
+      - ./config/lnd.conf:/root/.lnd/lnd.conf
+    depends_on:
+      - btcd
+    ports:
+      - 8080:8080
+      - 10009:10009
+
+networks:
+  shared:
+
+volumes:
+  shared:
+    driver: local
+
+  lndv:
+    driver: local
