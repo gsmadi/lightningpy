@@ -6,8 +6,7 @@ services:
     user: root
     build:
       context: .
-    networks:
-      - shared
+    network_mode: host
     volumes:
       - lndv:/lnd
     depends_on: 
@@ -22,8 +21,6 @@ services:
     user: root
     entrypoint: btcd
     command: --configfile=/home/btcd/.btcd/btcd.conf
-    networks:
-      - shared
     volumes:
       - shared:/rpc
       - ./config/btcd.conf:/home/btcd/.btcd/btcd.conf
@@ -34,8 +31,6 @@ services:
     entrypoint: lnd
     user: root
     command: --configfile=/root/.lnd/lnd.conf
-    networks:
-      - shared
     volumes:
       - shared:/rpc
       - lndv:/root/.lnd
@@ -45,9 +40,6 @@ services:
     ports:
       - 8080:8080
       - 10009:10009
-
-networks:
-  shared:
 
 volumes:
   shared:
