@@ -26,13 +26,17 @@ Then install,
 
 `python setup.py develop`
 
-To run tests execute,
+### Testing
+
+To run unit tests execute,
 
 `pytest`
 
-with code coverage,
+To run end-to-end tests,
 
-`pytest --cov=pylnd`
+`. scripts/e2e.sh`
+
+**Note**: Tests depend on `docker` and `docker-compose`.
 
 ## License
 
