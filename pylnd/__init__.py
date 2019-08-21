@@ -44,11 +44,8 @@ class LNDClientBase(object):
                       wallet_password: bytes,
                       recovery_window: int = 0,
                       channel_backups: object = None) -> object:
-        response = self._implementor.wallet_init(wallet_password,
-                                                 recovery_window,
-                                                 channel_backups)
+        response = self._implementor.wallet_unlock(wallet_password,
+                                                   recovery_window,
+                                                   channel_backups)
 
-        if response is None:
-            return False
-
-        return True
+        return response
