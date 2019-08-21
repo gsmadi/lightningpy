@@ -44,6 +44,8 @@ class LNDRESTClient(LNDClientAbstraction):
     def info(self) -> object:
         route = '/v1/getinfo'
 
+        self._init_macaroon()
+
         return self._get_request(route)
 
     def wallet_init(self,
@@ -78,7 +80,6 @@ class LNDRESTClient(LNDClientAbstraction):
             'wallet_password': base64.b64encode(wallet_password).decode(),
             'recovery_window': recovery_window
         }
-
         if channel_backups:
             data['channel_backups'] = channel_backups
 
@@ -117,7 +118,6 @@ class LNDRESTClient(LNDClientAbstraction):
     @staticmethod
     def _handle_error(response):
         error = response.json().get('error', None)
-
         if error:
             raise LNDRESTClientError(error)
 
@@ -125,7 +125,7 @@ class LNDRESTClient(LNDClientAbstraction):
         try:
             macaroon = read_file(self.macaroon_path)
             encoded_macaroon = encode_macaroon(macaroon)
-            self.headers = {'Grpc-Metadata-macaroon': encoded_macaroon}
+            self.headers.update({'Grpc-Metadata-macaroon': encoded_macaroon})
         except FileNotFoundError:
             raise LNDRESTClientError('Could not find macaroon file')
 
