@@ -5,7 +5,7 @@ import time
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-from pylnd.rest import LND
+from lnd.client.rest import LND
 
 URL = 'https://0.0.0.0:8080'
 CERT_PATH = ('tests/fake/tls.cert', 'tests/fake/tls.key')

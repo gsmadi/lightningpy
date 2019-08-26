@@ -1,7 +1,7 @@
 import pytest
 import requests
 
-from pylnd.rest import LND, LNDRESTClient, LNDRESTClientError
+from lnd.client.rest import LND, LNDRESTClient, LNDRESTClientError
 
 URL = 'localhost:8080'
 CERT_PATH = 'tests/fake/tls.cert'

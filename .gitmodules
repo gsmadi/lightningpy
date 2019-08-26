@@ -1,6 +1,6 @@
-[submodule "pylnd/grpc/googleapis"]
-	path = pylnd/grpc/googleapis
+[submodule "lnd/grpc/googleapis"]
+	path = lnd/grpc/googleapis
 	url = https://github.com/googleapis/googleapis.git
-[submodule "pylnd/grpc/lnd"]
-	path = pylnd/grpc/lnd
+[submodule "lnd/grpc/lnd"]
+	path = lnd/grpc/lnd
 	url = https://github.com/lightningnetwork/lnd.git

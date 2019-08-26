@@ -1,5 +1,5 @@
 
-from pylnd.utils import encode_macaroon, read_file
+from lnd.utils import encode_macaroon, read_file
 
 MACAROON_PATH = 'tests/fake/admin.macaroon'
 
