@@ -58,3 +58,15 @@ def test_info(state, lnd):
     ret = lnd.info()
     print(ret.json())
     assert ret.status_code == 200
+
+@pytest.mark.e2e
+def test_address_new(state, lnd):
+    ret = lnd.address_new()
+    print(ret.json())
+    assert ret.status_code == 200
+
+@pytest.mark.e2e
+def test_channels_balance(state, lnd):
+    ret = lnd.channels_balance()
+    print(ret.json())
+    assert ret.status_code == 200

@@ -14,13 +14,10 @@ class LNDClientBase(object):
         self._implementor = implementor
 
 
-    def address_new(self, address_type: str) -> object:
-        pass
+    def address_new(self, address_type: str = None) -> object:
+        response = self._implementor.address_new(address_type)
 
-
-    def channel_balance(self) -> object:
-        pass
-
+        return response
 
     def channel_close(self, funding_txid: str, output_index: int) -> object:
         pass
@@ -38,6 +35,11 @@ class LNDClientBase(object):
                      min_htlc_msat: str,
                      target_confirmations: int) -> object:
         pass
+
+    def channels_balance(self) -> object:
+        response = self._implementor.channels_balance()
+
+        return response
 
     def channels_closed(self,
                         cooperative: bool,

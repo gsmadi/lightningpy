@@ -27,13 +27,16 @@ class LNDRESTClient(LNDClientAbstraction):
         self.ssl_verify = ssl_verify
         self.headers = {}
 
-    def address_new(self, address_type: str) -> object:
-        pass
+    def address_new(self, address_type: str = None) -> object:
+        route = '/v1/newaddress'
+        params = {}
 
+        self._init_macaroon()
 
-    def channel_balance(self) -> object:
-        pass
-
+        if address_type:
+            params['type'] = address_type
+        
+        return self._get_request(route, params)
 
     def channel_close(self, funding_txid: str, output_index: int) -> object:
         pass
@@ -51,6 +54,13 @@ class LNDRESTClient(LNDClientAbstraction):
                      min_htlc_msat: str,
                      target_confirmations: int) -> object:
         pass
+
+    def channels_balance(self) -> object:
+        route = '/v1/balance/channels'
+
+        self._init_macaroon()
+
+        return self._get_request(route)
 
     def channels_closed(self,
                         cooperative: bool,

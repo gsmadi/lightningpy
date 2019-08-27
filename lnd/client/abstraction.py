@@ -10,11 +10,7 @@ class LNDClientAbstraction(metaclass=abc.ABCMeta):
     """
 
     @abc.abstractmethod
-    def address_new(self, address_type: str) -> object:
-        pass
-
-    @abc.abstractmethod
-    def channel_balance(self) -> object:
+    def address_new(self, address_type: str = None) -> object:
         pass
 
     @abc.abstractmethod
@@ -34,6 +30,10 @@ class LNDClientAbstraction(metaclass=abc.ABCMeta):
                      sat_per_byte: str,
                      min_htlc_msat: str,
                      target_confirmations: int) -> object:
+        pass
+
+    @abc.abstractmethod
+    def channels_balance(self) -> object:
         pass
 
     @abc.abstractmethod
@@ -186,7 +186,7 @@ class LNDClientAbstraction(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def peers_list() -> object:
+    def peers_list(self) -> object:
         pass
 
     @abc.abstractmethod
