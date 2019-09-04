@@ -9,7 +9,8 @@ def readme():
 EXTRAS = {}
 
 EXTRAS['docs'] = {
-    'sphinx'
+    'sphinx',
+    'sphinx_rtd_theme',
 }
 
 EXTRAS['dev'] = {
