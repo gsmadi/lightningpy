@@ -8,7 +8,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from lnd.client.rest import LND
 
 URL = 'https://0.0.0.0:8080'
-CERT_PATH = ('tests/fake/tls.cert', 'tests/fake/tls.key')
+CERT_PATH = ('tests/fake/tls.cer', 'tests/fake/tls.key')
 MACAROON_PATH = '/lnd/data/chain/bitcoin/simnet/admin.macaroon'
 
 TEST_ENV = os.environ.get('TEST_ENV', None)
@@ -26,7 +26,7 @@ def lnd():
 
     return lnd
 
-@pytest.mark.e2e
+@pytest.mark.int
 def test_generate_seed(state, lnd):
     mnemonic = lnd.generate_seed().json()
 
@@ -38,7 +38,7 @@ def test_generate_seed(state, lnd):
 
     state['cipher_seed_mnemonic'] = cipher_seed_mnemonic
 
-@pytest.mark.e2e
+@pytest.mark.int
 def test_wallet_init(state, lnd):
     cipher_seed_mnemonic = state['cipher_seed_mnemonic']
     ret = lnd.wallet_init(b'test1234', cipher_seed_mnemonic=cipher_seed_mnemonic)
@@ -47,25 +47,25 @@ def test_wallet_init(state, lnd):
 
     time.sleep(10)
 
-# @pytest.mark.e2e
+# @pytest.mark.int
 # def test_wallet_unlock(state, lnd):
 #     ret = lnd.wallet_unlock(b'test1234')
 
 #     assert ret.status_code == 200
 
-@pytest.mark.e2e
+@pytest.mark.int
 def test_info(state, lnd):
     ret = lnd.info()
     print(ret.json())
     assert ret.status_code == 200
 
-@pytest.mark.e2e
+@pytest.mark.int
 def test_address_new(state, lnd):
     ret = lnd.address_new()
     print(ret.json())
     assert ret.status_code == 200
 
-@pytest.mark.e2e
+@pytest.mark.int
 def test_channels_balance(state, lnd):
     ret = lnd.channels_balance()
     print(ret.json())
