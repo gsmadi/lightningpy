@@ -36,9 +36,9 @@ To run unit tests execute,
 
 `pytest`
 
-To run end-to-end tests,
+To run integration tests,
 
-`. scripts/e2e.sh`
+`. scripts/int.sh`
 
 **Note**: Tests depend on `docker` and `docker-compose`.
 
