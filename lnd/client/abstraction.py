@@ -33,6 +33,15 @@ class LNDClientAbstraction(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
+    def channel_policy_update(self,
+                              chan_point: dict,
+                              time_lock_delta: int,
+                              base_fee_msat: str,
+                              fee_rate: float,
+                              is_global: bool) -> object:
+        pass
+
+    @abc.abstractmethod
     def channels_balance(self) -> object:
         pass
 
@@ -77,7 +86,7 @@ class LNDClientAbstraction(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def graph_describe(self, include_unannounced: bool) -> object:
+    def graph_describe(self, include_unannounced: bool = False) -> object:
         pass
 
     @abc.abstractmethod

@@ -20,7 +20,9 @@ class LNDClientBase(object):
         return response
 
     def channel_close(self, funding_txid: str, output_index: int) -> object:
-        pass
+        response = self._implementor.channel_close(funding_txid, output_index)
+
+        return response
 
     def channel_open(self,
                      spend_unconfirmed: bool,
@@ -34,7 +36,15 @@ class LNDClientBase(object):
                      sat_per_byte: str,
                      min_htlc_msat: str,
                      target_confirmations: int) -> object:
-        pass
+        raise NotImplementedError()
+
+    def channel_policy_update(self,
+                              chan_point: dict,
+                              time_lock_delta: int,
+                              base_fee_msat: str,
+                              fee_rate: float,
+                              is_global: bool) -> object:
+        raise NotImplementedError()
 
     def channels_balance(self) -> object:
         response = self._implementor.channels_balance()
@@ -48,26 +58,34 @@ class LNDClientBase(object):
                         breach: bool,
                         funding_canceled: bool,
                         abandoned: bool) -> object:
-        pass
+        raise NotImplementedError()
 
     def channels_list(self,
                       active_only: bool,
                       inactive_only: bool,
                       public_only: bool,
                       private_only: bool) -> object:
-        pass
+        raise NotImplementedError()
 
     def channels_open(self) -> object:
-        pass
+        response = self._implementor.channels_open()
+
+        return response
 
     def channels_pending(self) -> object:
-        pass
+        response = self._implementor.channels_pending()
+
+        return response
 
     def fee_estimate(self, target_confirmations: int) -> object:
-        pass
+        response = self._implementor.fee_estimate(target_confirmations)
+
+        return response
 
     def fee_report(self) -> object:
-        pass
+        response = self._implementor.fee_report()
+
+        return response
 
     def generate_seed(self,
                       aezeed_passphrase: str = None,
@@ -78,16 +96,24 @@ class LNDClientBase(object):
         return response
 
     def graph_describe(self, include_unannounced: bool) -> object:
-        pass
+        response = self._implementor.graph_describe(include_unannounced)
+
+        return response
 
     def graph_info(self) -> object:
-        pass
+        response = self._implementor.graph_info()
+
+        return response
 
     def graph_channel_info(self, channel_id: str) -> object:
-        pass
+        response = self._implementor.graph_channel_info(channel_id)
+
+        return response
 
     def graph_node_info(self, pub_key: str, include_channels: bool) -> object:
-        pass
+        response = self._implementor.graph_node_info()
+
+        return response
 
     def graph_query_routes(self,
                            pub_key: str,
@@ -98,7 +124,7 @@ class LNDClientBase(object):
                            ignored_nodes: list,
                            source_pub_key: str,
                            use_mission_control: bool) -> object:
-        pass
+        raise NotImplementedError()
 
     def info(self) -> object:
         response = self._implementor.info()
@@ -126,26 +152,26 @@ class LNDClientBase(object):
                     payment_request: str,
                     amount_paid_sat: str,
                     value: str) -> object:
-        pass
+        raise NotImplementedError()
 
     def invoice_lookup(self, r_hash_string: str, r_hash: str) -> object:
-        pass
+        raise NotImplementedError()
 
     def invoices_list(self,
                       pending_only: bool,
                       index_offset: str,
                       num_max_invoices: str,
                       reverse: bool) -> object:
-        pass
+        raise NotImplementedError()
 
     def invoices_subscribe(self, add_index: str, settle_index: str) -> object:
-        pass
+        raise NotImplementedError()
 
     def message_sign(self, msg: bytes) -> object:
-        pass
+        raise NotImplementedError()
 
     def message_verify(self, msg: bytes, signiture: str) -> object:
-        pass
+        raise NotImplementedError()
 
     def payment_send(self,
                      outgoing_channel_id: str,
@@ -158,28 +184,38 @@ class LNDClientBase(object):
                      payment_request: str,
                      cltv_limit: int,
                      amount: str) -> object:
-        pass
+        raise NotImplementedError()
 
     def payment_route(self,
                       route: dict,
                       payment_hash: bytes,
                       payment_hash_string: str) -> object:
-        pass
+        raise NotImplementedError()
 
     def payments_list(self, include_incomplete: bool) -> object:
-        pass
+        response = self._implementor.payments_list(include_incomplete)
+
+        return response
 
     def payments_delete_all(self) -> object:
-        pass
+        response = self._implementor.payments_delete_all()
+
+        return response
 
     def peers_list(self) -> object:
-        pass
+        response = self._implementor.peers_list()
+
+        return response
 
     def peer_disconnect(self, pub_key: str) -> object:
-        pass
+        response = self._implementor.peer_disconnect(pub_key)
+
+        return response
 
     def peer_connect(self, perm: bool, address: Tuple[str, str]) -> object:
-        pass
+        response = self._implementor.peer_connect(perm, address)
+
+        return response
 
     def transaction_send(self,
                          send_all: bool,
@@ -187,18 +223,25 @@ class LNDClientBase(object):
                          amount: str,
                          sat_per_byte: str,
                          address: str) -> object:
-        pass
+        raise NotImplementedError()
 
     def transactions_list(self) -> object:
-        pass
+        response = self._implementor.transactions_list()
+
+        return response
 
     def unspent_list(self,
                      minimum_confirmations: int,
                      maximum_confirmations: int) -> object:
-        pass
+        response = self._implementor.unspent_list(minimum_confirmations,
+                                                  maximum_confirmations)
+
+        return response
 
     def wallet_balance(self) -> object:
-        pass
+        response = self._implementor.wallet_balance()
+
+        return response
 
     def wallet_init(self,
                     wallet_password: bytes,

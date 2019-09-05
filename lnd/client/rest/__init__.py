@@ -55,6 +55,14 @@ class LNDRESTClient(LNDClientAbstraction):
                      target_confirmations: int) -> object:
         pass
 
+    def channel_policy_update(self,
+                              chan_point: dict,
+                              time_lock_delta: int,
+                              base_fee_msat: str,
+                              fee_rate: float,
+                              is_global: bool) -> object:
+        pass
+
     def channels_balance(self) -> object:
         route = '/v1/balance/channels'
 

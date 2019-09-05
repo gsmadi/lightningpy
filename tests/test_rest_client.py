@@ -4,7 +4,7 @@ import requests
 from lnd.client.rest import LND, LNDRESTClient, LNDRESTClientError
 
 URL = 'localhost:8080'
-CERT_PATH = 'tests/fake/tls.cert'
+CERT_PATH = 'tests/fake/tls.cer'
 MACAROON_PATH = 'tests/fake/admin.macaroon'
 
 class MockResponse:
