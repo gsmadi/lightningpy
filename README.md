@@ -5,9 +5,9 @@
 [![codecov](https://codecov.io/gh/smadici-labs/pylnd/branch/master/graph/badge.svg)](https://codecov.io/gh/smadici-labs/pylnd)
 [![PyPI version](https://badge.fury.io/py/pylnd.svg)](https://badge.fury.io/py/pylnd)
 
-Python client for Lightning Network Deamon [(LND)](https://github.com/lightningnetwork/lnd) with batteries included.
+Python clients and utilities for Lightning Network Deamon [(LND)](https://github.com/lightningnetwork/lnd) with batteries included.
 
-Planned support for both REST and gRPC.
+Planned support for both REST and gRPC clients.
 
 Only supporting Python 3 since we should not be using Python 2.x anymore.
 

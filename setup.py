@@ -28,7 +28,7 @@ setup(
     author='Gabriel Smadi',
     author_email='gabriel@labs.smadi.ci',
     url='https://github.com/smadici-labs/pylnd',
-    description='Python client for Lightning Network Deamon',
+    description='Client and utilities for Lighting Network Deamon (LND)',
     long_description=readme(),
     long_description_content_type="text/markdown",
     packages=find_packages(exclude=["tests"]),
