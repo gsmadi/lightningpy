@@ -70,3 +70,51 @@ def test_channels_balance(state, lnd):
     ret = lnd.channels_balance()
     print(ret.json())
     assert ret.status_code == 200
+
+@pytest.mark.int
+def test_channels_list(state, lnd):
+    ret = lnd.channels_list()
+    print(ret.json())
+    assert ret.status_code == 200
+
+# @pytest.mark.int
+# def test_fee_estimate(state, lnd):
+#     ret = lnd.fee_estimate(0)
+#     print(ret.json())
+#     assert ret.status_code == 200
+
+@pytest.mark.int
+def test_fee_report(state, lnd):
+    ret = lnd.fee_report()
+    print(ret.json())
+    assert ret.status_code == 200
+
+@pytest.mark.int
+def test_graph_describe(state, lnd):
+    ret = lnd.graph_describe()
+    print(ret.json())
+    assert ret.status_code == 200
+
+@pytest.mark.int
+def test_graph_info(state, lnd):
+    ret = lnd.graph_info()
+    print(ret.json())
+    assert ret.status_code == 200
+
+@pytest.mark.int
+def test_payments_list(state, lnd):
+    ret = lnd.payments_list()
+    print(ret.json())
+    assert ret.status_code == 200
+
+@pytest.mark.int
+def test_peers_list(state, lnd):
+    ret = lnd.peers_list()
+    print(ret.json())
+    assert ret.status_code == 200
+
+@pytest.mark.int
+def test_wallet_balance(state, lnd):
+    ret = lnd.wallet_balance()
+    print(ret.json())
+    assert ret.status_code == 200

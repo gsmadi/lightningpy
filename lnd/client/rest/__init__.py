@@ -1,5 +1,6 @@
 import base64
 import codecs
+from functools import wraps
 import json
 from typing import Dict, List, Tuple
 import requests
@@ -7,6 +8,24 @@ import requests
 from lnd.client.abstraction import LNDClientAbstraction
 from lnd.client import LNDClientBase
 from lnd.utils import encode_macaroon, read_file
+
+
+def requires_macaroon_authentication(func):
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        if not self._macaroon:
+            try:
+                macaroon = read_file(self.macaroon_path)
+                encoded_macaroon = encode_macaroon(macaroon)
+                self._macaroon = encoded_macaroon
+                self._init_macaroon()
+            except FileNotFoundError:
+                err_msg = f'Macaroon file not found on {self.macaroon_path}'
+                raise LNDRESTClientError(err_msg)
+
+        return func(self, *args, **kwargs)
+
+    return wrapper
 
 
 class LNDRESTClientError(Exception):
@@ -19,6 +38,7 @@ class LNDRESTClient(LNDClientAbstraction):
     certificate_path: str
     macaroon_path: str
     ssl_verify: bool
+    _macaroon: bytes
 
     def __init__(self, url, certificate_path, macaroon_path, ssl_verify=False):
         self.url = url
@@ -26,14 +46,15 @@ class LNDRESTClient(LNDClientAbstraction):
         self.macaroon_path = macaroon_path
         self.ssl_verify = ssl_verify
         self.headers = {}
+        self._macaroon = None
 
+    @requires_macaroon_authentication
     def address_new(self, address_type: str = None) -> object:
         route = '/v1/newaddress'
         params = {}
 
-        self._init_macaroon()
-
         if address_type:
+            # TODO: (gsmadi) Add assertions for types
             params['type'] = address_type
         
         return self._get_request(route, params)
@@ -63,10 +84,9 @@ class LNDRESTClient(LNDClientAbstraction):
                               is_global: bool) -> object:
         pass
 
+    @requires_macaroon_authentication
     def channels_balance(self) -> object:
         route = '/v1/balance/channels'
-
-        self._init_macaroon()
 
         return self._get_request(route)
 
@@ -79,36 +99,77 @@ class LNDRESTClient(LNDClientAbstraction):
                         abandoned: bool) -> object:
         pass
 
+    @requires_macaroon_authentication
     def channels_list(self,
-                      active_only: bool,
-                      inactive_only: bool,
-                      public_only: bool,
-                      private_only: bool) -> object:
-        pass
+                      active_only: bool = False,
+                      inactive_only: bool = False,
+                      public_only: bool = False,
+                      private_only: bool = False) -> object:
+        route = '/v1/channels'
+        params = {
+            'active_only': active_only,
+            'inactive_only': inactive_only,
+            'public_only': public_only,
+            'private_only': private_only
+        }
+
+        return self._get_request(route, params)
 
     def channels_open(self) -> object:
         pass
 
+    @requires_macaroon_authentication
     def channels_pending(self) -> object:
-        pass
+        route = '/v1/channels/pending'
 
+        return self._get_request(route)
+
+    @requires_macaroon_authentication
     def fee_estimate(self, target_confirmations: int) -> object:
-        pass
+        route = '/v1/transactions/fee'
+        params = {
+            'target_conf': target_confirmations
+        }
 
+        return self._get_request(route, params)
+
+    @requires_macaroon_authentication
     def fee_report(self) -> object:
-        pass
+        route = '/v1/fees'
 
-    def graph_describe(self, include_unannounced: bool) -> object:
-        pass
+        return self._get_request(route)
 
+    @requires_macaroon_authentication
+    def graph_describe(self, include_unannounced: bool = False) -> object:
+        route = '/v1/graph'
+        params = {
+            'include_unannounced': include_unannounced
+        }
+
+        return self._get_request(route, params)
+
+    @requires_macaroon_authentication
     def graph_info(self) -> object:
-        pass
+        route = '/v1/graph/info'
 
+        return self._get_request(route)
+
+    @requires_macaroon_authentication
     def graph_channel_info(self, channel_id: str) -> object:
-        pass
+        route = f'/v1/graph/edge/{channel_id}'
 
-    def graph_node_info(self, pub_key: str, include_channels: bool) -> object:
-        pass
+        return self._get_request(route)
+
+    @requires_macaroon_authentication
+    def graph_node_info(self,
+                        pub_key: str,
+                        include_channels: bool = False) -> object:
+        route = f'/v1/graph/node/{pub_key}'
+        params = {
+            'include_channels': include_channels
+        }
+
+        return self._get_request(route, params)
 
     def graph_query_routes(self,
                            pub_key: str,
@@ -135,10 +196,9 @@ class LNDRESTClient(LNDClientAbstraction):
 
         return self._get_request(route, params)
 
+    @requires_macaroon_authentication
     def info(self) -> object:
         route = '/v1/getinfo'
-
-        self._init_macaroon()
 
         return self._get_request(route)
 
@@ -168,15 +228,42 @@ class LNDRESTClient(LNDClientAbstraction):
     def invoice_lookup(self, r_hash_string: str, r_hash: str) -> object:
         pass
 
+    @requires_macaroon_authentication
     def invoices_list(self,
                       pending_only: bool,
                       index_offset: str,
-                      num_max_invoices: str,
-                      reverse: bool) -> object:
-        pass
+                      reverse: bool,
+                      num_max_invoices: str = '100') -> object:
+        route = '/v1/invoices'
+        params = {
+            'num_max_invoices': num_max_invoices
+        }
 
-    def invoices_subscribe(self, add_index: str, settle_index: str) -> object:
-        pass
+        if pending_only:
+            params['pending_only'] = pending_only
+        
+        if index_offset:
+            params['index_offset'] = index_offset
+
+        if reverse:
+            params['reversed'] = reverse
+
+        return self._get_request(route, params)
+
+    @requires_macaroon_authentication
+    def invoices_subscribe(self,
+                           add_index: str = None,
+                           settle_index: str = None) -> object:
+        route = '/v1/invoices/subscribe'
+        params = {}
+
+        if add_index:
+            params['add_index'] = add_index
+        
+        if settle_index:
+            params['settle_index'] = settle_index
+
+        return self._get_request(route, params, stream=True)
 
     def message_sign(self, msg: bytes) -> object:
         pass
@@ -203,14 +290,23 @@ class LNDRESTClient(LNDClientAbstraction):
                       payment_hash_string: str) -> object:
         pass
 
-    def payments_list(self, include_incomplete: bool) -> object:
-        pass
+    @requires_macaroon_authentication
+    def payments_list(self, include_incomplete: bool = False) -> object:
+        route = '/v1/payments'
+        params = {}
+
+        params['include_incomplete'] = include_incomplete
+
+        return self._get_request(route, params)
 
     def payments_delete_all(self) -> object:
         pass
 
+    @requires_macaroon_authentication
     def peers_list(self) -> object:
-        pass
+        route = '/v1/peers'
+
+        return self._get_request(route)
 
     def peer_disconnect(self, pub_key: str) -> object:
         pass
@@ -226,16 +322,29 @@ class LNDRESTClient(LNDClientAbstraction):
                          address: str) -> object:
         pass
 
+    @requires_macaroon_authentication
     def transactions_list(self) -> object:
-        pass
+        route = '/v1/transactions'
 
+        return self._get_request(route)
+
+    @requires_macaroon_authentication
     def unspent_list(self,
                      minimum_confirmations: int,
                      maximum_confirmations: int) -> object:
-        pass
+        route = '/v1/utxos'
+        params = {
+            'min_confs': minimum_confirmations,
+            'max_confs': maximum_confirmations
+        }
 
+        return self._get_request(route, params)
+
+    @requires_macaroon_authentication
     def wallet_balance(self) -> object:
-        pass
+        route = '/v1/balance/blockchain'
+
+        return self._get_request(route)
 
     def wallet_init(self,
                     wallet_password: bytes,
@@ -279,7 +388,10 @@ class LNDRESTClient(LNDClientAbstraction):
     def _endpoint(self, route) -> str:
         return f'{self.url}{route}'
 
-    def _get_request(self, route, params: Dict[str, any] = None) -> object:
+    def _get_request(self,
+                     route: str,
+                     params: Dict[str, any] = None,
+                     stream: bool = False) -> object:
         if not params:
             params = {}
 
@@ -287,7 +399,8 @@ class LNDRESTClient(LNDClientAbstraction):
                                 headers=self.headers,
                                 cert=self.certificate_path,
                                 verify=self.ssl_verify,
-                                params=params)
+                                params=params,
+                                stream=stream)
 
         self._handle_error(response)
 
@@ -311,12 +424,7 @@ class LNDRESTClient(LNDClientAbstraction):
             raise LNDRESTClientError(error)
 
     def _init_macaroon(self):
-        try:
-            macaroon = read_file(self.macaroon_path)
-            encoded_macaroon = encode_macaroon(macaroon)
-            self.headers.update({'Grpc-Metadata-macaroon': encoded_macaroon})
-        except FileNotFoundError:
-            raise LNDRESTClientError('Could not find macaroon file')
+        self.headers.update({'Grpc-Metadata-macaroon': self._macaroon})
 
 
 class LND(LNDClientBase):

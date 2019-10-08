@@ -13,7 +13,6 @@ class LNDClientBase(object):
     def __init__(self, implementor):
         self._implementor = implementor
 
-
     def address_new(self, address_type: str = None) -> object:
         response = self._implementor.address_new(address_type)
 
@@ -61,11 +60,14 @@ class LNDClientBase(object):
         raise NotImplementedError()
 
     def channels_list(self,
-                      active_only: bool,
-                      inactive_only: bool,
-                      public_only: bool,
-                      private_only: bool) -> object:
-        raise NotImplementedError()
+                      active_only: bool = False,
+                      inactive_only: bool = False,
+                      public_only: bool = False,
+                      private_only: bool = False) -> object:
+        response = self._implementor.channels_list(active_only, inactive_only,
+                                                   public_only, private_only)
+
+        return response
 
     def channels_open(self) -> object:
         response = self._implementor.channels_open()
@@ -95,7 +97,7 @@ class LNDClientBase(object):
 
         return response
 
-    def graph_describe(self, include_unannounced: bool) -> object:
+    def graph_describe(self, include_unannounced: bool = False) -> object:
         response = self._implementor.graph_describe(include_unannounced)
 
         return response
@@ -110,8 +112,10 @@ class LNDClientBase(object):
 
         return response
 
-    def graph_node_info(self, pub_key: str, include_channels: bool) -> object:
-        response = self._implementor.graph_node_info()
+    def graph_node_info(self,
+                        pub_key: str,
+                        include_channels: bool = False) -> object:
+        response = self._implementor.graph_node_info(pub_key, include_channels)
 
         return response
 
@@ -160,8 +164,8 @@ class LNDClientBase(object):
     def invoices_list(self,
                       pending_only: bool,
                       index_offset: str,
-                      num_max_invoices: str,
-                      reverse: bool) -> object:
+                      reverse: bool,
+                      num_max_invoices: str) -> object:
         raise NotImplementedError()
 
     def invoices_subscribe(self, add_index: str, settle_index: str) -> object:
@@ -192,7 +196,7 @@ class LNDClientBase(object):
                       payment_hash_string: str) -> object:
         raise NotImplementedError()
 
-    def payments_list(self, include_incomplete: bool) -> object:
+    def payments_list(self, include_incomplete: bool = False) -> object:
         response = self._implementor.payments_list(include_incomplete)
 
         return response

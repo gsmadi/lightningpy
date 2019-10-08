@@ -63,18 +63,102 @@ def test_client_post_request(lnd_rest_client):
 
     assert result.json().get('mock_key') == 'mock_response'
 
-def test_lnd_info(lnd_rest_client):
+def test_info(lnd_rest_client):
     response = lnd_rest_client.info()
-
+    print(response)
     assert isinstance(response, MockResponse)
 
-def test_lnd_generate_seed(lnd_rest_client):
+def test_generate_seed(lnd_rest_client):
     response = lnd_rest_client.generate_seed()
 
     assert isinstance(response, MockResponse)
 
     response = lnd_rest_client.generate_seed(aezeed_passphrase='dummy',
                                              seed_entropy='dummy2')
+
+    assert isinstance(response, MockResponse)
+
+def test_address_new(lnd_rest_client):
+    response = lnd_rest_client.address_new()
+
+    assert isinstance(response, MockResponse)
+
+    response = lnd_rest_client.address_new('type')
+
+    assert isinstance(response, MockResponse)
+
+def test_channels_balance(lnd_rest_client):
+    response = lnd_rest_client.channels_balance()
+
+    assert isinstance(response, MockResponse)
+
+def test_channels_list(lnd_rest_client):
+    response = lnd_rest_client.channels_list()
+
+    assert isinstance(response, MockResponse)
+
+def test_fee_estimate(lnd_rest_client):
+    response = lnd_rest_client.fee_estimate(6)
+
+    assert isinstance(response, MockResponse)
+
+def test_fee_report(lnd_rest_client):
+    response = lnd_rest_client.fee_report()
+
+    assert isinstance(response, MockResponse)
+
+def test_graph_describe(lnd_rest_client):
+    response = lnd_rest_client.graph_describe()
+
+    assert isinstance(response, MockResponse)
+
+def test_graph_info(lnd_rest_client):
+    response = lnd_rest_client.graph_info()
+
+    assert isinstance(response, MockResponse)
+
+def test_graph_channel_info(lnd_rest_client):
+    response = lnd_rest_client.graph_channel_info('123')
+
+    assert isinstance(response, MockResponse)
+
+def test_graph_node_info(lnd_rest_client):
+    response = lnd_rest_client.graph_node_info('123')
+
+    assert isinstance(response, MockResponse)
+
+def test_invoices_list(lnd_rest_client):
+    response = lnd_rest_client.invoices_list(True, 1, True)
+
+    assert isinstance(response, MockResponse)
+
+def test_invoices_subsribe(lnd_rest_client):
+    response = lnd_rest_client.invoices_subscribe('i', 'i')
+
+    assert isinstance(response, MockResponse)
+
+def test_payments_list(lnd_rest_client):
+    response = lnd_rest_client.payments_list()
+
+    assert isinstance(response, MockResponse)
+
+def test_peers_list(lnd_rest_client):
+    response = lnd_rest_client.peers_list()
+
+    assert isinstance(response, MockResponse)
+
+def test_transactions_list(lnd_rest_client):
+    response = lnd_rest_client.transactions_list()
+
+    assert isinstance(response, MockResponse)
+
+def test_unspent_list(lnd_rest_client):
+    response = lnd_rest_client.unspent_list(1, 7)
+
+    assert isinstance(response, MockResponse)
+
+def test_wallet_balance(lnd_rest_client):
+    response = lnd_rest_client.wallet_balance()
 
     assert isinstance(response, MockResponse)
 
@@ -86,7 +170,6 @@ def test_lnd_wallet_init(lnd_rest_client):
 
     assert isinstance(response, MockResponse)
 
-
 def test_lnd_wallet_unlock(lnd_rest_client):
     response = lnd_rest_client.wallet_unlock(b'password', 2)
 
@@ -96,3 +179,6 @@ def test_lnd_client_initialize():
     lnd = LND(URL, CERT_PATH, MACAROON_PATH)
 
     assert isinstance(lnd._implementor, LNDRESTClient)
+
+# def test_client_init_macaroon(lnd_rest_client):
+#     self._init_macaroon()
